@@ -313,6 +313,7 @@ void cassie_get_state(const cassie_sim_t *sim, cassie_state_t *state);
 // Copies the state of a simulation state object into a Cassie simulator.
 void cassie_set_state(cassie_sim_t *sim, const cassie_state_t *state);
 
+extern double force[6];
 
 #ifdef __cplusplus
 }

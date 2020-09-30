@@ -1697,6 +1697,7 @@ void cassie_vis_set_cam(cassie_vis_t* v, const char* body_name, double zoom, dou
     
 }
 
+double force[6]={0, 0, 0, 0, 0, 0};
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     (void)scancode;
     cassie_vis_t* v = glfwGetWindowUserPointer_fp(window);
@@ -1816,35 +1817,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 mj_forward_fp(v->m, v->d);
             } break;
             case GLFW_KEY_RIGHT: {      // step forward
-                if (v->paused) {
-                    mj_step_fp(v->m, v->d);
-                }
+              force[1] += 200;
             } break;
-            // case GLFW_KEY_LEFT: {       // step backward
-            //     if (v->paused) {
-            //         double dt = v->m->opt.timestep;
-            //         v->m->opt.timestep = -dt;
-            //         mj_step_fp(v->m, v->d);
-            //         v->m->opt.timestep = dt;
-            //     }
-            // } break;
+             case GLFW_KEY_LEFT: {       // step backward
+               force[1] -= 200;
+             } break;
             case GLFW_KEY_DOWN: {      // step forward 100
-                if (v->paused) {
-                    for (int i = 0; i < 100; i++) {
-                        mj_step_fp(v->m, v->d);
-                    }
-                }
+              force[0] -= 200;
             } break;
-            // case GLFW_KEY_UP: {       // step back 100
-            //     if (v->paused) {
-            //         double dt = v->m->opt.timestep;
-            //         v->m->opt.timestep = -dt;
-            //         for (int i = 0; i < 100; i++) {
-            //             mj_step_fp(v->m, v->d);
-            //         }
-            //         v->m->opt.timestep = dt;
-            //     }
-            // } break;
+             case GLFW_KEY_UP: {       // step back 100
+               force[0] += 200;
+             } break;
             case GLFW_KEY_ESCAPE: {     // free camera
                 v->cam.type = mjCAMERA_FREE;
             } break;
@@ -1884,7 +1867,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             } break;
         }
     }
-
 }
 
 void sensorinit(cassie_vis_t *v) {
